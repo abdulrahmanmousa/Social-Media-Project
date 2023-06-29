@@ -147,7 +147,7 @@ function getPost() {
     let commentsContents = ``;
 
     for (comment of comments) {
-      commentsContents += `<div class="p-3 col-9 comment " >
+      commentsContents += `<div class="p-3 w-100 comment " >
   <img
     src="${comment.author.profile_image}"
     alt=""
@@ -219,25 +219,26 @@ function getPost() {
             <span>(${post.comments_count}) comments</span>
           </div>
         </div>
+        <div class="d-flex align-items-center bg-primary flex-column mb-2" id="comments">
+        ${commentsContents}
+          </div>
+          <div class="container  py-3">
+          <div class="input-group" id="add-comment-div">
+            <input
+              type="text"
+              id="comment-input"
+              placeholder="add your comment here "
+              class="form-control"
+            />
+            <button class="btn btn-outline-primary" type="button" onclick="createCommentClicked()">send</button>
+          </div>
       </div>
     </div>
     
     <!-- posts cont -->
   </div>
   
-  <div class="d-flex align-items-center flex-column mb-2" id="comments">
-${commentsContents}
-  </div>
-  <div class="container col-9">
-  <div class="input-group" id="add-comment-div">
-    <input
-      type="text"
-      id="comment-input"
-      placeholder="add your comment here "
-      class="form-control"
-    />
-    <button class="btn btn-outline-primary" type="button" onclick="createCommentClicked()">send</button>
-  </div>
+
 </div>
   `;
     document.getElementById("post").innerHTML = postContent;
