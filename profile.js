@@ -1,5 +1,3 @@
-import axios from "axios";
-
 function getUserProfile() {
   let id = currenUserId();
   axios.get(`${baseUrl}/users/${id}`).then((response) => {

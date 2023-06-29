@@ -1,6 +1,3 @@
-import axios from "axios";
-import bootstrap from "bootstrap";
-
 const baseUrl = "https://tarmeezacademy.com/api/v1";
 let currentPage = 1;
 let lastPage = 1;
