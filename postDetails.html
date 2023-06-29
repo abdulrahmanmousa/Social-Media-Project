@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post Details</title>
+    <!-- import scripts & styles -->
+    <script src="node_modules/axios/dist/axios.min.js"></script>
+
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+
+    <style>
+      body {
+        background-color: #f0ecff;
+      }
+      #add-button {
+        position: fixed;
+        right: 5%;
+        bottom: 5%;
+        height: 70px;
+        width: 70px;
+        font-size: 50px;
+        color: white;
+        cursor: pointer;
+      }
+      .comment {
+        background-color: rgb(255, 255, 255);
+        display: flex;
+        gap: 15px;
+        /* color: rgb(0, 0, 0);
+        border-radius: 6px;
+        margin-bottom: 10px; */
+      }
+    </style>
+    <!--// import scripts & styles //-->
+  </head>
+  <body>
+    <!-- navigation bar -->
+    <div class="container">
+      <div class="d-flex justify-content-center">
+        <nav
+          class="navbar navbar-expand-lg bg-body-tertiary shadow rounded-bottom pt-2 col-9"
+        >
+          <div class="container-fluid">
+            <a class="navbar-brand" href="home.html">Social</a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    aria-current="page"
+                    href="home.html"
+                  >
+                    Home
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    onclick="profileClicked()"
+                    style="cursor: pointer"
+                  >
+                    Profile
+                  </a>
+                </li>
+              </ul>
+
+              <!-- non-logged in -->
+              <div class="d-flex w-100 justify-content-end">
+                <button
+                  id="login-btn"
+                  type="button"
+                  class="btn btn-outline-success mx-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#loginModal"
+                >
+                  Login
+                </button>
+                <button
+                  id="register-btn"
+                  type="button"
+                  class="btn btn-outline-success"
+                  data-bs-toggle="modal"
+                  data-bs-target="#register-modal"
+                >
+                  Register
+                </button>
+              </div>
+              <!-- non-logged in -->
+
+              <!-- logged in -->
+              <div
+                id="logout-div"
+                class="d-flex w-100 justify-content-end align-items-center"
+              >
+                <img
+                  src="./profile-pics/1.jpeg"
+                  alt=""
+                  class="rounded-circle"
+                  style="width: 40px; height: 40px"
+                  id="nav-img"
+                />
+                <b id="nav-username" class="mx-2">@real3bdulrahman</b>
+
+                <button
+                  id="logout-btn"
+                  type="button"
+                  class="btn btn-outline-danger mx-2"
+                  onclick="logout()"
+                >
+                  Logout
+                </button>
+              </div>
+
+              <!--// logged in //-->
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!-- navigation bar -->
+
+    <!-- MODALS -->
+
+    <!-- login modal -->
+    <div
+      class="modal fade"
+      id="loginModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">
+                  Username:
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username-input"
+                  value="leo10"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="message-text" class="col-form-label">
+                  Password:
+                </label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password-input"
+                  value="123456"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="loginBtnClicked()"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- login modal -->
+
+    <!-- register modal  -->
+
+    <div
+      class="modal fade"
+      id="register-modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="register-modal-input">
+              Register A New User
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Name:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="register-name-input"
+                  value="leo"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">
+                  Username:
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="register-username-input"
+                  value="leo10"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="message-text" class="col-form-label">
+                  Password:
+                </label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="register-password-input"
+                  value="123456"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="message-text" class="col-form-label">
+                  Profile Picture:
+                </label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="profile-picture-input"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="registerBtnClicked()"
+            >
+              Register
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- register modal  -->
+
+    <!-- ALERTS -->
+
+    <div
+      id="success-alert"
+      class="show fade"
+      style="position: fixed; z-index: 999999; width: 30%; bottom: 0; right: 0"
+    ></div>
+
+    <!--// ALERTS //-->
+
+    <!-- MODALS -->
+
+    <!-- main content -->
+
+    <div class="container" style="height: 1000px" id="post">
+      <!-- user's post -->
+      <div class="row mt-5 d-flex justify-content-center">
+        <div class="col-lg-9">
+          <h1>
+            <span id="username-span">leo</span>
+            Post
+          </h1>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-5">
+        <div id="posts" class="posts col-9">
+          <div class="card shadow my-2">
+            <div class="card-header">
+              <img
+                src="profile-pics/1.jpeg"
+                alt=""
+                class="rounded-circle border border-3"
+                style="height: 40px; width: 40px"
+              />
+              <b>@Real3bdulrahman</b>
+            </div>
+            <div class="card-body">
+              <img src="placeholders/1.jpeg" alt="" class="w-100" />
+
+              <h6 style="color: rgb(172, 172, 172)" class="mt-1">8 min ago</h6>
+
+              <h5>A woman with psg players</h5>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque
+                hic debitis rerum aut incidunt ullam fugit ipsa, dolor dolores
+                quisquam molestiae reiciendis culpa? Facilis, commodi. Obcaecati
+                dolore quod blanditiis quidem.
+              </p>
+              <hr />
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-pen"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"
+                  />
+                </svg>
+
+                <span>(3) comments</span>
+                <span id="post-tags"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- posts cont -->
+      </div>
+
+      <!-- comments -->
+      <div class="d-flex justify-content-center my-2" id="comments">
+        <div class="p-3 col-9" style="background-color: rgb(199, 199, 199)">
+          <img
+            src="profile-pics/1.jpeg"
+            alt=""
+            class="rounded-circle"
+            style="width: 40px; height: 40px"
+          />
+          <b>@leo10</b>
+          <!-- comment body  -->
+
+          <div>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquam
+            nulla debitis sapiente voluptate unde. Delectus, quis labore?
+            Aperiam saepe ab dolor tenetur. Aspernatur error perferendis eum
+            vero nobis recusandae impedit?
+          </div>
+          <!-- comment body  -->
+        </div>
+      </div>
+      <div class="container col-9">
+        <div class="input-group" id="add-comment-div">
+          <input
+            type="text"
+            id="comment-input"
+            placeholder="add your comment here "
+            class="form-control"
+          />
+          <button class="btn btn-outline-primary" type="button">send</button>
+        </div>
+      </div>
+
+      <!-- comments -->
+
+      <!-- user's post -->
+    </div>
+
+    <!-- main content -->
+
+    <script src="main.js"></script>
+    <script src="home.js"></script>
+  </body>
+</html>
