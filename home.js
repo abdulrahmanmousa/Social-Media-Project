@@ -1,4 +1,4 @@
-import axios from "node_modules/axios/dist/axios.min.js";
+import axios from "axios";
 
 const baseUrl = "https://tarmeezacademy.com/api/v1";
 let currentPage = 1;
