@@ -1,5 +1,4 @@
-const axios = require("axios");
-const bootstrap = require("bootstrap");
+import axios from "./node_modules/axios/dist/axios.min.js";
 
 const baseUrl = "https://tarmeezacademy.com/api/v1";
 let currentPage = 1;
