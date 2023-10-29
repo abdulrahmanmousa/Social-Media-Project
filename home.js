@@ -5,6 +5,7 @@ let currentPage = 1;
 let lastPage = 1;
 getPosts();
 setupUI();
+// home.js
 
 function getPosts(reload = true, page = 1) {
   axios.get(`${baseUrl}/posts?limit=2&page=${page}`).then((response) => {
